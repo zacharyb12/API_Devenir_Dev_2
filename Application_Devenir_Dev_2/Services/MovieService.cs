@@ -19,25 +19,24 @@ namespace Application_Devenir_Dev_2.Services
             return await _repository.GetMovies();
         }
 
-        public Task<Movie> CreateMovieAsync(Movie newMovie)
+        public async Task<Movie> CreateMovieAsync(Movie newMovie)
         {
-            throw new NotImplementedException();
+            return await _repository.CreateMovie(newMovie);
         }
 
-        public Task<bool> DeleteMovieAsync(int id)
+        public async Task<Movie?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.GetById(id);
+        }
+        public async Task<Movie?> UpdateMovie(int id, Movie updatedMovie)
+        {
+            return await _repository.UpdateMovie(id,updatedMovie);
         }
 
-
-        public Task<Movie?> GetByIdAsync(int id)
+        public async Task<bool> DeleteMovieAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.DeleteMovie(id);
         }
 
-        public Task<Movie> UpdateMovie(int id, Movie updatedMovie)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

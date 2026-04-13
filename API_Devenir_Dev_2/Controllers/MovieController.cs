@@ -31,44 +31,101 @@ namespace API_Devenir_Dev_2.Controllers
         }
         #endregion
 
+
+        #region Create Movie
+        [HttpPost]
+        public async Task<IActionResult> CreateMovie(Movie newMovie)
+        {
+            try
+            {
+                Movie response = await _service.CreateMovieAsync(newMovie);
+
+                if (response == null)
+                {
+                    return BadRequest("Erreur lors de la création");
+                }
+
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+
+
         #region Get Movie By Id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            Movie movie = new Movie();
+            Movie? movie = await _service.GetByIdAsync(id);
+
+            if(movie == null)
+            {
+                return NotFound($"Aucun film avec l'id {id}");
+            }
 
             return Ok(movie);
         }
 
         #endregion
 
-        #region Create Movie
-        [HttpPost]
-        public async Task<IActionResult> CreateMovie(Movie newMovie)
-        {
-            string response = "Movie à été crée" + newMovie.Title;
-
-            return Ok(response);
-        }
-        #endregion
 
         #region Update Movie
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMovie(int id , Movie updatedMovie)
         {
-            string response = "Movie à été modifié" + id + " " + updatedMovie.Title;
+            try
+            {
+                if (id < 0)
+                {
+                    return BadRequest("L'identifiant est incorrect");
+                }
 
-            return Ok();
+                if (updatedMovie.Title == string.Empty)
+                {
+                    return BadRequest("Le titre est obligatoire");
+                }
+
+                // recuperation ou execution 
+                Movie? result = await _service.UpdateMovie(id, updatedMovie);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                // retourne une reponse
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         #endregion
+
 
         #region Delete
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
-            string response = $" Le film avec l'id {id} à bien été supprimé";
+            try
+            {
+                bool result = await _service.DeleteMovieAsync(id);
 
-            return Ok(id);
+                if(!result)
+                {
+                    return NotFound();
+                }
+
+                return Ok("Le film a bien été supprimé");
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         #endregion
     }

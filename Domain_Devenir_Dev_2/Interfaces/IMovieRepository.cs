@@ -11,5 +11,17 @@ namespace Domain_Devenir_Dev_2.Interfaces
     public interface IMovieRepository
     {
         Task<List<Movie>> GetMovies();
+
+        Task<Movie> CreateMovie(Movie newMovie);
+
+        // Get By Id
+        Task<Movie?> GetById(int id);
+
+        // Update
+
+        Task<Movie?> UpdateMovie(int id, Movie updatedMovie);
+
+        // Delete
+        Task<bool> DeleteMovie(int id);
     }
 }

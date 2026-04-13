@@ -23,5 +23,72 @@ namespace Infrastructure.Devenir_Dev_2.Repositories
             return await _context.Movies.ToListAsync();
         }
 
+        public async Task<Movie> CreateMovie(Movie newMovie)
+        {
+           _context.Movies.Add(newMovie);
+
+            await _context.SaveChangesAsync();
+
+            return newMovie;
+        }
+
+
+        // Get By Id
+        public async Task<Movie?> GetById(int id)
+        {
+            Movie? movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+
+            if(movie == null)
+            {
+                return null;
+            }
+
+            return movie;
+        }
+
+        // Update
+        public async Task<Movie?> UpdateMovie(int id , Movie updatedMovie)
+        {
+            Movie movieToUpdate = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+
+            if(movieToUpdate == null)
+            {
+                return null;
+            }
+
+            // modification des champs de l'objet
+
+            movieToUpdate.Title = updatedMovie.Title;
+            movieToUpdate.Synopsis = updatedMovie.Synopsis;
+            movieToUpdate.Genre = updatedMovie.Genre;
+            movieToUpdate.ImageUrl = updatedMovie.ImageUrl;
+
+            // sauvegarde des modifications dans la base de données
+            await _context.SaveChangesAsync();
+
+            // retourne une reponse
+            return movieToUpdate;
+        }
+
+        // Delete
+        public async Task<bool> DeleteMovie(int id)
+        {
+            Movie? movie = _context.Movies.FirstOrDefault(m => m.Id == id);
+
+            if(movie == null)
+            {
+                return false;
+                //throw new Exception("Movie not found");
+            }
+
+            // execution
+            _context.Remove(movie);
+
+            // sauvegarde des modifications dans la base de données
+            await _context.SaveChangesAsync();
+
+            // reponse à renvoyer
+            return true;
+        }
     }
 }

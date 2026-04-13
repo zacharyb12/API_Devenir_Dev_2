@@ -19,7 +19,7 @@ namespace Application_Devenir_Dev_2.Services.Interfaces
         Task<Movie> CreateMovieAsync(Movie newMovie);
 
         // Update
-        Task<Movie> UpdateMovie(int id , Movie updatedMovie);
+        Task<Movie?> UpdateMovie(int id , Movie updatedMovie);
 
         // Delete
         Task<bool> DeleteMovieAsync(int id);
