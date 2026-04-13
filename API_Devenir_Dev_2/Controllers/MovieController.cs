@@ -32,7 +32,7 @@ namespace API_Devenir_Dev_2.Controllers
         #endregion
 
 
-        #region Create Movie
+        #region CreateMovie
         [HttpPost]
         public async Task<IActionResult> CreateMovie(Movie newMovie)
         {
